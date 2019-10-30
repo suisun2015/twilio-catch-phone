@@ -13,6 +13,7 @@ const server = app.listen(3000, () => {
 
 
 const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と#を押してください。';
+const MSG_STOP_SERVICE = `本日のカムイルミナは、悪天候のため中止とさせていただいております。本日のチケットをご予約いただいておりますお客様に着きましては、近日中にキャンセルの上ご返金のご連絡を、ご購入時のメールアドレスにお送りさせていただきます。\nこの度はお電話誠にありがとうございました。`;
 const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットに関しましては「２」を、その他のお問い合わせに関しましては「３」を押してください。';
 const MSG_2_1 = '本日のカムイルミナの営業時間は17時から21時半までとなっております。ご予約いただきましたお客様に着きましては、ご予約時間の15分前には入場口へお越しくださいますよう、お願いいたします。\nこの度はお電話誠にありがとうございました。';
 const MSG_2_2 = 'ご購入いただいたチケットの再発行につきましては「１」を、ご購入されたチケットの日時変更をご希望の方は「２」を、ご購入されたチケットのキャンセルをご希望の方は「３」を、ご購入されたチケットの領収書をご希望の方は「４」を、その他チケットに関するお問い合わせは「５」を押してください。';
@@ -64,7 +65,7 @@ app.post('/welcome', (req, res) => {
     response.say({
         voice: 'alice',
         language: 'jp-JP'
-    }, MSG_BAD_DIGIT);
+    }, MSG_NO_TONE);
 
     console.log(response.toString()); // for debug
     res.header('Content-Type', 'text/xml');
@@ -86,6 +87,10 @@ app.post('/section_1', (req, res) => {
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_1);
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);
     } else {
         response.say({
             voice: 'alice',
@@ -120,6 +125,10 @@ app.post('/section_2', (req, res) => {
             language: 'jp-JP'
         }, MSG_2_2
         );
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);
     // 2-3.その他のお問い合わせ
     } else if (digit == '3') {
         response.gather({
@@ -130,6 +139,10 @@ app.post('/section_2', (req, res) => {
             language: 'jp-JP'
         }, MSG_2_3
         );
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);
     } else {
         response.say({
             voice: 'alice',
@@ -157,6 +170,10 @@ app.post('/section_2_2', (req, res) => {
             language: 'jp-JP'
         }, MSG_3_1
         );
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);        
     // 3-2.購入したチケットの日時変更
     } else if (digit == '2') {
         response.say({
@@ -206,6 +223,15 @@ app.post('/section_3_1', (req, res) => {
             language: 'jp-JP'
         }, MSG_3_1_1_prefix + phoneNumber + MSG_3_1_1_suffix
         );
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);        
+    } else {
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_BAD_PHONE);        
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
@@ -232,7 +258,11 @@ app.post('/section_3_1_1', (req, res) => {
         response.gather({
             action: '/section_3_1',
             method: 'POST'
-        });                 
+        });
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);                 
     } else {
         response.say({
             voice: 'alice',
@@ -249,6 +279,7 @@ app.post('/section_2_3', (req, res) => {
     // Generate a TwiML response
     let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
+    // check phone
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
         ///////////////////////////////
@@ -261,7 +292,16 @@ app.post('/section_2_3', (req, res) => {
             language: 'jp-JP'
         }, MSG_2_3_1_prefix + phoneNumber + MSG_2_3_1_suffix
         );
-    } 
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);        
+    } else {
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_BAD_PHONE);
+    }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
     res.send(twiml.toString());
@@ -283,6 +323,10 @@ app.post('/section_2_3_1', (req, res) => {
             language: 'jp-JP'
         }, MSG_2_3_2
         );
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);        
     // 再度ご入力される場合 
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
@@ -292,6 +336,10 @@ app.post('/section_2_3_1', (req, res) => {
             action: '/section_2_3',
             method: 'POST'
         });
+        response.say({
+            voice: 'alice',
+            language: 'jp-JP'
+        }, MSG_NO_TONE);        
     } else {
         response.say({
             voice: 'alice',
