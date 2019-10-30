@@ -53,12 +53,10 @@ app.post('/welcome', (req, res) => {
     let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
 
-    let gather = response.gather({
+    response.gather({
         action: '/section_1',
         method: 'POST'
-    });
-
-    gather.say({
+    }).say({
         voice: 'alice',
         language: 'jp-JP'
     }, MSG_WELCOME);
@@ -81,11 +79,10 @@ app.post('/section_1', (req, res) => {
     let response = new VoiceResponse();
 
     if (digit == '1') {
-        let gather = response.gather({
+        response.gather({
             action: '/section_2',
             method: 'POST'
-        });
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_1);
@@ -115,22 +112,20 @@ app.post('/section_2', (req, res) => {
         }, MSG_2_1 );
     // 2-2.購入チケットに関して
     } else if (digit == '2') {
-        let gather = response.gather({
+        response.gather({
             action: '/section_2_2',
             method: 'POST'
-        });
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_2_2
         );
     // 2-3.その他のお問い合わせ
     } else if (digit == '3') {
-        let gather = response.gather({
+        response.gather({
             action: '/section_2_3',
             method: 'POST'
-        });
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_2_3
@@ -154,11 +149,10 @@ app.post('/section_2_2', (req, res) => {
     
     // 3-1.購入したチケットの再発行
     if (digit == '1') {
-        let gather = response.gather({
+        response.gather({
             action: '/section_3_1',
             method: 'POST'
-        });        
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_3_1
@@ -204,11 +198,10 @@ app.post('/section_3_1', (req, res) => {
         // 電話番号をデータベースに保存する
         ///////////////////////////////
         ///////////////////////////////
-        let gather = response.gather({
+        response.gather({
             action: '/section_3_1_1',
             method: 'POST'
-        });
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_3_1_1_prefix + phoneNumber + MSG_3_1_1_suffix
@@ -260,11 +253,10 @@ app.post('/section_2_3', (req, res) => {
         // 電話番号をデータベースに保存する
         ///////////////////////////////
         ///////////////////////////////
-        let gather = response.gather({
+        response.gather({
             action: '/section_2_3_1',
             method: 'POST'
-        });
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_2_3_1_prefix + phoneNumber + MSG_2_3_1_suffix
@@ -282,12 +274,11 @@ app.post('/section_2_3_1', (req, res) => {
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
-        let gather = response.gather({
+        response.gather({
             action: '/section_2_3_1_1',
             input: 'dtmf speech',
             method: 'POST'
-        });        
-        gather.say({
+        }).say({
             voice: 'alice',
             language: 'jp-JP'
         }, MSG_2_3_2
