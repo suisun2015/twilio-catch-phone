@@ -40,7 +40,7 @@ exports.planets = function planets(digit) {
   if (optionActions[digit]) {
     const twiml = new VoiceResponse();
     twiml.dial(optionActions[digit]);
-    return twiml.toString();
+    return response.toString();
   }
 
   return redirectWelcome();
@@ -68,7 +68,7 @@ function giveExtractionPointInstructions() {
 
   twiml.hangup();
 
-  return twiml.toString();
+  return response.toString();
 }
 
 /**
@@ -91,7 +91,7 @@ function listPlanets() {
     {voice: 'alice', language: 'en-GB', loop: 3}
   );
 
-  return twiml.toString();
+  return response.toString();
 }
 
 /**
@@ -108,5 +108,5 @@ function redirectWelcome() {
 
   twiml.redirect('/ivr/welcome');
 
-  return twiml.toString();
+  return response.toString();
 }

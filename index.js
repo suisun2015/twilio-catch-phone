@@ -2,16 +2,63 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const twilio = require('twilio');
-
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
+const mysql = require('mysql');
 const app = express();
 
-// Run server to listen on port 3000.
-const server = app.listen(3000, () => {
-    console.log('listening on *:3000');
+
+/**
+ * Database Connection
+ * 
+ */
+var connection = mysql.createConnection({
+    host: process.env.NODE_ENV ==='production' ? 'dev-aca.cu72a2lknk9v.ap-northeast-1.rds.amazonaws.com':'localhost',
+    user: 'root',
+    password: process.env.NODE_ENV ==='production' ? 'ehmOTI,L8R.':'ahfmqslek',
+    database: 'twilio_contacts'
 });
 
+// connect to database
+connection.connect(function(err) {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to database');
+});
 
+module.export = connection;
+
+/**
+ * Run server to listen on port 3000.
+ */
+var port = process.env.NODE_ENV ==='production' ? 80 : 3000;
+const server = app.listen(port, () => {
+    console.log('listening on *:' +port);
+});
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+global.newContact = {};
+
+app.use(function(req, res, next){
+    newContact = {
+        call_sid: req.body.CallSid || '',
+        from: req.body.From || '',
+        to: req.body.To || '',
+        created_at: new Date(),
+        updated_at: new Date(),
+        phone: '',
+        voice_path: ''
+    };
+    console.log(newContact);
+    next();
+});
+
+/**
+ * Message Constants
+ */
 const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と#を押してください。';
 const MSG_STOP_SERVICE = `本日のカムイルミナは、悪天候のため中止とさせていただいております。本日のチケットをご予約いただいておりますお客様に着きましては、近日中にキャンセルの上ご返金のご連絡を、ご購入時のメールアドレスにお送りさせていただきます。\nこの度はお電話誠にありがとうございました。`;
 const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットに関しましては「２」を、その他のお問い合わせに関しましては「３」を押してください。';
@@ -33,10 +80,6 @@ const MSG_NO_TONE = 'ご入力が確認できません。ダイヤル回線ご�
 const MSG_BAD_DIGIT = 'ご入力番号が確認できませんでした。音声ガイダンスに従って、番号を正しく入力してください。';
 const MSG_BAD_PHONE = '電話番号を正しく入力してください。';
 
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
-
 // Set Express routes.
 app.post('/events', (req, res) => {
     let to = req.body.to;
@@ -51,7 +94,6 @@ app.post('/events', (req, res) => {
 
 app.post('/welcome', (req, res) => {
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
 
     response.gather({
@@ -69,14 +111,13 @@ app.post('/welcome', (req, res) => {
 
     console.log(response.toString()); // for debug
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 
 });
 
 app.post('/section_1', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
 
     if (digit == '1') {
@@ -99,14 +140,13 @@ app.post('/section_1', (req, res) => {
     }
     console.log(response.toString()); // for debug
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 
 });
 
 app.post('/section_2', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
 
     // 2-1.本日の営業に関して
@@ -151,13 +191,12 @@ app.post('/section_2', (req, res) => {
     }
     console.log(response.toString()); // for debug
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 app.post('/section_2_2', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     
     // 3-1.購入したチケットの再発行
@@ -203,18 +242,24 @@ app.post('/section_2_2', (req, res) => {
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 app.post('/section_3_1', (req, res) => {
     let phoneNumber = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
-        ///////////////////////////////
-        ///////////////////////////////
+        console.log(newContact);        
+        connection.query("INSERT INTO contacts set ?", newContact, function (err, res) {
+                
+            if(err) {
+                console.log("error: ", err);
+            }
+            console.log('Inserted new record into contacts')
+        }); 
+
         response.gather({
             action: '/section_3_1_1',
             method: 'POST'
@@ -235,13 +280,12 @@ app.post('/section_3_1', (req, res) => {
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 app.post('/section_3_1_1', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     // よろしければ
     if (digit == '1') {
@@ -253,8 +297,13 @@ app.post('/section_3_1_1', (req, res) => {
     // 再度ご入力される場合
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        /////////////////////////////
-        /////////////////////////////
+        connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, res) {
+
+            if(err) {
+                console.log("error: ", err);
+            }
+            console.log('Deleted record, CallSid: '+req.body.CallSid);
+        });
         response.gather({
             action: '/section_3_1',
             method: 'POST'
@@ -271,19 +320,24 @@ app.post('/section_3_1_1', (req, res) => {
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 app.post('/section_2_3', (req, res) => {
     let phoneNumber = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     // check phone
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
-        ///////////////////////////////
-        ///////////////////////////////
+        console.log(newContact);        
+        connection.query("INSERT INTO contacts set ?", newContact, function (err, res) {
+                
+            if(err) {
+                console.log("error: ", err);
+            }
+            console.log('Inserted new record into contacts');
+        }); 
         response.gather({
             action: '/section_2_3_1',
             method: 'POST'
@@ -304,13 +358,12 @@ app.post('/section_2_3', (req, res) => {
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 app.post('/section_2_3_1', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
@@ -330,8 +383,12 @@ app.post('/section_2_3_1', (req, res) => {
     // 再度ご入力される場合 
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        /////////////////////////////
-        /////////////////////////////
+        connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, res) {
+            if(err) {
+                console.log("error: ", err);
+            }
+            console.log('Deleted record, CallSid:'+req.body.CallSid);
+        });
         response.gather({
             action: '/section_2_3',
             method: 'POST'
@@ -348,7 +405,7 @@ app.post('/section_2_3_1', (req, res) => {
     }
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 
@@ -357,7 +414,6 @@ app.post('/section_2_3_1_1', (req, res) => {
     let confidence = req.body.Confidence;
     
     // Generate a TwiML response
-    let VoiceResponse = new twilio.twiml.VoiceResponse();
     let response = new VoiceResponse();
     response.say({
         voice: 'alice',
@@ -365,9 +421,7 @@ app.post('/section_2_3_1_1', (req, res) => {
     }, MSG_2_3_3
     );
     // 音声データを保存する
-    ////////////////////
-    ////////////////////
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
