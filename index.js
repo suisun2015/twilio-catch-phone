@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 global.newContact = {};
-
+app.use(express.static('public'));
 app.use(function(req, res, next){
     newContact = {
         call_sid: req.body.CallSid || '',
