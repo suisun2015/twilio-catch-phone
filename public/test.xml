@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Gather action="/section_1" method="POST">
+        <Say voice="alice" language="jp-JP">お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と#を押してください。</Say>
+    </Gather>
+    <Say voice="alice" language="jp-JP">ご入力が確認できません。ダイヤル回線ご利用の方は、プッシュトーンへの切替えをお願いいたします。</Say>
+</Response>
