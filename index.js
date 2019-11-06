@@ -11,22 +11,13 @@ const app = express();
  * Database Connection
  * 
  */
-var connection = mysql.createConnection({
+var option = {
     host: process.env.NODE_ENV ==='production' ? 'dev-aca.cu72a2lknk9v.ap-northeast-1.rds.amazonaws.com':'localhost',
     user: 'root',
     password: process.env.NODE_ENV ==='production' ? 'ehmOTI,L8R.':'ahfmqslek',
     database: 'twilio_contacts'
-});
-
-// connect to database
-connection.connect(function(err) {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected to database');
-});
-
-module.export = connection;
+};
+console.log(option);
 
 /**
  * Run server to listen on port 3000.
@@ -90,7 +81,6 @@ app.post('/events', (req, res) => {
     console.log(to, fromNumber, callStatus, callSid);
     res.send('Event received');
 });
-
 
 app.post('/welcome', (req, res) => {
     // Generate a TwiML response
@@ -251,15 +241,19 @@ app.post('/section_3_1', (req, res) => {
     let response = new VoiceResponse();
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
-        console.log(newContact);        
-        connection.query("INSERT INTO contacts set ?", newContact, function (err, res) {
-                
-            if(err) {
-                console.log("error: ", err);
-            }
-            console.log('Inserted new record into contacts')
-        }); 
-
+        console.log(newContact);
+        // connection.connect(function(err) {
+        //     if (err)
+        //         console.log('database connect failed' +  err);
+        //     else 
+        //         connection.query("INSERT INTO contacts set ?", newContact, function (err, result) {
+        //             if(err) 
+        //                 console.log("error: ", err);
+        //             else
+        //                 console.log('Inserted new record into contacts')
+        //         });
+        //     connection.end();
+        // }); 
         response.gather({
             action: '/section_3_1_1',
             method: 'POST'
@@ -297,13 +291,19 @@ app.post('/section_3_1_1', (req, res) => {
     // 再度ご入力される場合
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, res) {
+        // connection.connect(function(err) {
+        //     if (err)
+        //         console.log('database connect failed'+err);
+        //     else 
+        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
+        //             if(err) 
+        //                 console.log("error: ", err);
+        //             else
+        //                 console.log('Deleted record, CallSid: '+req.body.CallSid);
+        //         });
+        //     connection.end();
+        // });
 
-            if(err) {
-                console.log("error: ", err);
-            }
-            console.log('Deleted record, CallSid: '+req.body.CallSid);
-        });
         response.gather({
             action: '/section_3_1',
             method: 'POST'
@@ -330,14 +330,19 @@ app.post('/section_2_3', (req, res) => {
     // check phone
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
-        console.log(newContact);        
-        connection.query("INSERT INTO contacts set ?", newContact, function (err, res) {
-                
-            if(err) {
-                console.log("error: ", err);
-            }
-            console.log('Inserted new record into contacts');
-        }); 
+        console.log(newContact);
+        // connection.connect(function(err) {
+        //     if (err)
+        //         console.log('database connect failed'+err);
+        //     else 
+        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
+        //             if(err) 
+        //                 console.log("error: ", err);
+        //             else
+        //                 console.log('Inserted new record into contacts: '+req.body.CallSid);
+        //         });
+        //     connection.end();
+        // });                
         response.gather({
             action: '/section_2_3_1',
             method: 'POST'
@@ -383,12 +388,19 @@ app.post('/section_2_3_1', (req, res) => {
     // 再度ご入力される場合 
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, res) {
-            if(err) {
-                console.log("error: ", err);
-            }
-            console.log('Deleted record, CallSid:'+req.body.CallSid);
-        });
+        // connection.connect(function(err) {
+        //     if (err)
+        //         console.log('database connect failed'+err);
+        //     else 
+        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
+        //             if(err) 
+        //                 console.log("error: ", err);
+        //             else
+        //                 console.log('Deleted record, CallSid: '+req.body.CallSid);
+        //                 connection.end();
+        //         });
+        //     connection.end();
+        // });   
         response.gather({
             action: '/section_2_3',
             method: 'POST'
