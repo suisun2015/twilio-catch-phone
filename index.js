@@ -91,12 +91,12 @@ app.post('/welcome', (req, res) => {
         method: 'POST'
     }).say({
         voice: 'alice',
-        language: 'jp-JP'
+        language: 'ja-JP'
     }, MSG_WELCOME);
 
     response.say({
         voice: 'alice',
-        language: 'jp-JP'
+        language: 'ja-JP'
     }, MSG_NO_TONE);
 
     console.log(response.toString()); // for debug
@@ -116,16 +116,16 @@ app.post('/section_1', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_1);
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_DIGIT);
     }
     console.log(response.toString()); // for debug
@@ -143,7 +143,7 @@ app.post('/section_2', (req, res) => {
     if (digit == '1') {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_2_1 );
     // 2-2.購入チケットに関して
     } else if (digit == '2') {
@@ -152,12 +152,12 @@ app.post('/section_2', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_2_2
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);
     // 2-3.その他のお問い合わせ
     } else if (digit == '3') {
@@ -166,17 +166,17 @@ app.post('/section_2', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_2_3
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_DIGIT);        
     }
     console.log(response.toString()); // for debug
@@ -196,38 +196,38 @@ app.post('/section_2_2', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_1
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);        
     // 3-2.購入したチケットの日時変更
     } else if (digit == '2') {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_2
         );
     // 3-3.購入したチケットのキャンセル
     } else if (digit == '3') {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_3 
         );
     // 3-4.購入したチケットの領収書
     } else if (digit == '4') {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_4 
     );
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_DIGIT);        
     }
     console.log(response.toString());
@@ -259,17 +259,17 @@ app.post('/section_3_1', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_1_1_prefix + phoneNumber + MSG_3_1_1_suffix
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);        
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_PHONE);        
     }
     console.log(response.toString());
@@ -285,7 +285,7 @@ app.post('/section_3_1_1', (req, res) => {
     if (digit == '1') {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_3_1_2
         );
     // 再度ご入力される場合
@@ -310,12 +310,12 @@ app.post('/section_3_1_1', (req, res) => {
         });
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);                 
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_DIGIT);            
     }
     console.log(response.toString());
@@ -348,17 +348,17 @@ app.post('/section_2_3', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_2_3_1_prefix + phoneNumber + MSG_2_3_1_suffix
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);        
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_PHONE);
     }
     console.log(response.toString());
@@ -378,12 +378,12 @@ app.post('/section_2_3_1', (req, res) => {
             method: 'POST'
         }).say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_2_3_2
         );
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);        
     // 再度ご入力される場合 
     } else if (digit == '2') {
@@ -407,12 +407,12 @@ app.post('/section_2_3_1', (req, res) => {
         });
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_NO_TONE);        
     } else {
         response.say({
             voice: 'alice',
-            language: 'jp-JP'
+            language: 'ja-JP'
         }, MSG_BAD_DIGIT);            
     }
     console.log(response.toString());
@@ -429,7 +429,7 @@ app.post('/section_2_3_1_1', (req, res) => {
     let response = new VoiceResponse();
     response.say({
         voice: 'alice',
-        language: 'jp-JP'
+        language: 'ja-JP'
     }, MSG_2_3_3
     );
     // 音声データを保存する
