@@ -88,7 +88,10 @@ app.post('/welcome', (req, res) => {
 
     response.gather({
         action: '/section_1',
-        method: 'POST'
+        method: 'POST',
+        input: 'dtmf',
+        timeout: 3600,
+        numDigits: 1
     }).say({
         voice: 'alice',
         language: 'ja-JP'
@@ -113,7 +116,10 @@ app.post('/section_1', (req, res) => {
     if (digit == '1') {
         response.gather({
             action: '/section_2',
-            method: 'POST'
+            method: 'POST',
+            input: 'dtmf',
+            timeout: 3600,
+            numDigits: 1       
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -149,7 +155,10 @@ app.post('/section_2', (req, res) => {
     } else if (digit == '2') {
         response.gather({
             action: '/section_2_2',
-            method: 'POST'
+            method: 'POST',
+            input: 'dtmf',
+            timeout: 3600,
+            numDigits: 1
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -163,7 +172,9 @@ app.post('/section_2', (req, res) => {
     } else if (digit == '3') {
         response.gather({
             action: '/section_2_3',
-            method: 'POST'
+            method: 'POST',
+            input: 'dtmf',
+            timeout: 3600          
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -193,7 +204,9 @@ app.post('/section_2_2', (req, res) => {
     if (digit == '1') {
         response.gather({
             action: '/section_3_1',
-            method: 'POST'
+            method: 'POST',
+            timeout: 3600,
+            input: 'dtmf'
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -256,7 +269,10 @@ app.post('/section_3_1', (req, res) => {
         // }); 
         response.gather({
             action: '/section_3_1_1',
-            method: 'POST'
+            method: 'POST',
+            timeout: 3600,
+            input: 'dtmf',
+            numDigits: 1
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -303,10 +319,11 @@ app.post('/section_3_1_1', (req, res) => {
         //         });
         //     connection.end();
         // });
-
         response.gather({
             action: '/section_3_1',
-            method: 'POST'
+            method: 'POST',
+            input: 'dtmf',
+            timeout: 3600           
         });
         response.say({
             voice: 'alice',
@@ -345,7 +362,10 @@ app.post('/section_2_3', (req, res) => {
         // });                
         response.gather({
             action: '/section_2_3_1',
-            method: 'POST'
+            method: 'POST',
+            numDigits: 1,
+            timeout: 3600,
+            input: 'dtmf'
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -375,7 +395,8 @@ app.post('/section_2_3_1', (req, res) => {
         response.gather({
             action: '/section_2_3_1_1',
             input: 'dtmf speech',
-            method: 'POST'
+            method: 'POST',
+            timeout: 3600
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -403,7 +424,9 @@ app.post('/section_2_3_1', (req, res) => {
         // });   
         response.gather({
             action: '/section_2_3',
-            method: 'POST'
+            method: 'POST',
+            input: 'dtmf',
+            timeout: 3600
         });
         response.say({
             voice: 'alice',
