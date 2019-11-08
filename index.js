@@ -50,17 +50,17 @@ app.use(function(req, res, next){
 /**
  * Message Constants
  */
-const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と#を押してください。';
+const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と*を押してください。';
 const MSG_STOP_SERVICE = `本日のカムイルミナは、悪天候のため中止とさせていただいております。本日のチケットをご予約いただいておりますお客様に着きましては、近日中にキャンセルの上ご返金のご連絡を、ご購入時のメールアドレスにお送りさせていただきます。\nこの度はお電話誠にありがとうございました。`;
 const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットに関しましては「２」を、その他のお問い合わせに関しましては「３」を押してください。';
 const MSG_2_1 = '本日のカムイルミナの営業時間は17時から21時半までとなっております。ご予約いただきましたお客様に着きましては、ご予約時間の15分前には入場口へお越しくださいますよう、お願いいたします。\nこの度はお電話誠にありがとうございました。';
 const MSG_2_2 = 'ご購入いただいたチケットの再発行につきましては「１」を、ご購入されたチケットの日時変更をご希望の方は「２」を、ご購入されたチケットのキャンセルをご希望の方は「３」を、ご購入されたチケットの領収書をご希望の方は「４」を、その他チケットに関するお問い合わせは「５」を押してください。';
-const MSG_2_3 = 'その他のお問い合わせにつきましては、こちらから折り返しお電話にてご連絡させていただきます。折り返しご連絡可能なお電話番号をご入力の上、最後に「#」ボタンを押してください。';
+const MSG_2_3 = 'その他のお問い合わせにつきましては、こちらから折り返しお電話にてご連絡させていただきます。折り返しご連絡可能なお電話番号をご入力の上、最後に「*」ボタンを押してください。';
 const MSG_2_3_1_prefix = 'お電話番号は「';
 const MSG_2_3_1_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
-const MSG_2_3_2 = 'ピーという発信音の後に、お問い合わせ内容をお話しください。終了しましたら、「#」を押してください。';
+const MSG_2_3_2 = 'ピーという発信音の後に、お問い合わせ内容をお話しください。終了しましたら、「*」を押してください。';
 const MSG_2_3_3 = 'お問い合わせを承りました。内容を確認いたしまして、折り返しご連絡させていただきます。この度はお電話誠にありがとうございました。';
-const MSG_3_1 = 'WEBでご購入されましたチケットに関しましては、ショートメッセージ送信による再発行が可能です。ご購入時に登録されたお電話番号をご入力の上、最後に「#」ボタンを押してください。なお、ご購入時と異なるお電話番号を入力されても、再発行はできませんので予めご了承ください。';
+const MSG_3_1 = 'WEBでご購入されましたチケットに関しましては、ショートメッセージ送信による再発行が可能です。ご購入時に登録されたお電話番号をご入力の上、最後に「*」ボタンを押してください。なお、ご購入時と異なるお電話番号を入力されても、再発行はできませんので予めご了承ください。';
 const MSG_3_1_1_prefix = 'お電話番号は「';
 const MSG_3_1_1_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
 const MSG_3_1_2 = '再発行依頼を承りました。ご入力いただきましたお電話番号の注文が確認できましたら、チケットの再発行を行います。\nこの度はお電話誠にありがとうございました。';
@@ -89,6 +89,7 @@ app.post('/welcome', (req, res) => {
     response.gather({
         action: '/section_1',
         method: 'POST',
+        finishOnKey: '*',
         input: 'dtmf',
         timeout: 3600,
         numDigits: 1
@@ -117,6 +118,7 @@ app.post('/section_1', (req, res) => {
         response.gather({
             action: '/section_2',
             method: 'POST',
+            finishOnKey: '*',            
             input: 'dtmf',
             timeout: 3600,
             numDigits: 1       
@@ -156,6 +158,7 @@ app.post('/section_2', (req, res) => {
         response.gather({
             action: '/section_2_2',
             method: 'POST',
+            finishOnKey: '*',            
             input: 'dtmf',
             timeout: 3600,
             numDigits: 1
@@ -173,6 +176,7 @@ app.post('/section_2', (req, res) => {
         response.gather({
             action: '/section_2_3',
             method: 'POST',
+            finishOnKey: '*',            
             input: 'dtmf',
             timeout: 3600          
         }).say({
@@ -205,6 +209,7 @@ app.post('/section_2_2', (req, res) => {
         response.gather({
             action: '/section_3_1',
             method: 'POST',
+            finishOnKey: '*',            
             timeout: 3600,
             input: 'dtmf'
         }).say({
@@ -270,6 +275,7 @@ app.post('/section_3_1', (req, res) => {
         response.gather({
             action: '/section_3_1_1',
             method: 'POST',
+            finishOnKey: '*',            
             timeout: 3600,
             input: 'dtmf',
             numDigits: 1
@@ -322,6 +328,7 @@ app.post('/section_3_1_1', (req, res) => {
         response.gather({
             action: '/section_3_1',
             method: 'POST',
+            finishOnKey: '*',            
             input: 'dtmf',
             timeout: 3600           
         });
@@ -363,6 +370,7 @@ app.post('/section_2_3', (req, res) => {
         response.gather({
             action: '/section_2_3_1',
             method: 'POST',
+            finishOnKey: '*',            
             numDigits: 1,
             timeout: 3600,
             input: 'dtmf'
@@ -396,6 +404,7 @@ app.post('/section_2_3_1', (req, res) => {
             action: '/section_2_3_1_1',
             input: 'dtmf speech',
             method: 'POST',
+            finishOnKey: '*',            
             timeout: 3600
         }).say({
             voice: 'alice',
@@ -425,6 +434,7 @@ app.post('/section_2_3_1', (req, res) => {
         response.gather({
             action: '/section_2_3',
             method: 'POST',
+            finishOnKey: '*',            
             input: 'dtmf',
             timeout: 3600
         });
