@@ -91,8 +91,7 @@ app.post('/welcome', (req, res) => {
         method: 'POST',
         finishOnKey: '*',
         input: 'dtmf',
-        timeout: 3600,
-        numDigits: 1
+        timeout: 3600
     }).say({
         voice: 'alice',
         language: 'ja-JP'
@@ -120,8 +119,7 @@ app.post('/section_1', (req, res) => {
             method: 'POST',
             finishOnKey: '*',            
             input: 'dtmf',
-            timeout: 3600,
-            numDigits: 1       
+            timeout: 3600      
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -160,8 +158,7 @@ app.post('/section_2', (req, res) => {
             method: 'POST',
             finishOnKey: '*',            
             input: 'dtmf',
-            timeout: 3600,
-            numDigits: 1
+            timeout: 3600
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -277,8 +274,7 @@ app.post('/section_3_1', (req, res) => {
             method: 'POST',
             finishOnKey: '*',            
             timeout: 3600,
-            input: 'dtmf',
-            numDigits: 1
+            input: 'dtmf'
         }).say({
             voice: 'alice',
             language: 'ja-JP'
@@ -370,8 +366,7 @@ app.post('/section_2_3', (req, res) => {
         response.gather({
             action: '/section_2_3_1',
             method: 'POST',
-            finishOnKey: '*',            
-            numDigits: 1,
+            finishOnKey: '*',
             timeout: 3600,
             input: 'dtmf'
         }).say({
