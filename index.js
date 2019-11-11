@@ -50,23 +50,24 @@ app.use(function(req, res, next){
 /**
  * Message Constants
  */
-const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、1と*を押してください。';
+const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、*を押してください。';
 const MSG_STOP_SERVICE = `本日のカムイルミナは、悪天候のため中止とさせていただいております。本日のチケットをご予約いただいておりますお客様に着きましては、近日中にキャンセルの上ご返金のご連絡を、ご購入時のメールアドレスにお送りさせていただきます。\nこの度はお電話誠にありがとうございました。`;
-const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットに関しましては「２」を、その他のお問い合わせに関しましては「３」を押してください。';
+const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットの日時変更・キャンセルに関しましては「２」を、購入したチケットの再発行に関しましては「３」を、購入したチケットの領収書につきましては「４」を、その他のお問い合わせに関しましては「５」を押してください。';
 const MSG_2_1 = '本日のカムイルミナの営業時間は17時から21時半までとなっております。ご予約いただきましたお客様に着きましては、ご予約時間の15分前には入場口へお越しくださいますよう、お願いいたします。\nこの度はお電話誠にありがとうございました。';
-const MSG_2_2 = 'ご購入いただいたチケットの再発行につきましては「１」を、ご購入されたチケットの日時変更をご希望の方は「２」を、ご購入されたチケットのキャンセルをご希望の方は「３」を、ご購入されたチケットの領収書をご希望の方は「４」を、その他チケットに関するお問い合わせは「５」を押してください。';
-const MSG_2_3 = 'その他のお問い合わせにつきましては、こちらから折り返しお電話にてご連絡させていただきます。折り返しご連絡可能なお電話番号をご入力の上、最後に「*」ボタンを押してください。';
-const MSG_2_3_1_prefix = 'お電話番号は「';
-const MSG_2_3_1_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
-const MSG_2_3_2 = 'ピーという発信音の後に、お問い合わせ内容をお話しください。終了しましたら、「*」を押してください。';
-const MSG_2_3_3 = 'お問い合わせを承りました。内容を確認いたしまして、折り返しご連絡させていただきます。この度はお電話誠にありがとうございました。';
-const MSG_3_1 = 'WEBでご購入されましたチケットに関しましては、ショートメッセージ送信による再発行が可能です。ご購入時に登録されたお電話番号をご入力の上、最後に「*」ボタンを押してください。なお、ご購入時と異なるお電話番号を入力されても、再発行はできませんので予めご了承ください。';
-const MSG_3_1_1_prefix = 'お電話番号は「';
-const MSG_3_1_1_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
-const MSG_3_1_2 = '再発行依頼を承りました。ご入力いただきましたお電話番号の注文が確認できましたら、チケットの再発行を行います。\nこの度はお電話誠にありがとうございました。';
-const MSG_3_2 = 'WEBで予約購入されましたチケットの予約日時の変更に関しましては、特に事前の手続きは不要です。ご来場当日、カムイルミナの入場窓口までお越しいただきました上、その旨スタッフにお伝えください。\nこの度はお電話誠にありがとうございました。';
-const MSG_3_3 = 'WEBで予約購入されましたチケットのキャンセルにつきましては、基本承っておりません。天候などの理由にて、カムイルミナの開催が中止になった場合につきましては、後日チケットのキャンセルとご返金のご連絡をメールにてさせていただきます。\nこの度はお電話誠にありがとうございました。';
-const MSG_3_4 = 'WEBで予約購入されましたチケットの領収書をご希望のお客様は、ご来場当日、カムイルミナの入場窓口までお越しいただきました上、その旨スタッフにお伝えください。\nこの度はお電話誠にありがとうございました。';
+const MSG_2_2 = 'ご購入されたチケットの日時変更をご希望の方は「１」を、ご購入されたチケットのキャンセルをご希望の方は「２」を押してください。。';
+const MSG_2_3 = 'WEBでご購入されましたチケットに関しましては、ショートメッセージ送信による再発行が可能です。ご購入時に登録されたお電話番号をご入力の上、最後に「シャープ」ボタンを押してください。なお、ご購入時と異なるお電話番号を入力されても、再発行はできませんので予めご了承ください。';
+const MSG_2_3_p_prefix = 'お電話番号は「';
+const MSG_2_3_p_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
+const MSG_2_3_p_1 = '再発行依頼を承りました。ご入力いただきましたお電話番号の注文が確認できましたら、チケットの再発行を行います。\nこの度はお電話誠にありがとうございました。';
+const MSG_2_4 = 'WEBで予約購入されましたチケットの領収書をご希望のお客様は、ご来場当日、カムイルミナの入場窓口までお越しいただきました上、その旨スタッフにお伝えください。\nこの度はお電話誠にありがとうございました。';
+const MSG_2_5 = 'その他のお問い合わせにつきましては、こちらから折り返しお電話にてご連絡させていただきます。折り返しご連絡可能なお電話番号をご入力の上、最後に「シャープ」ボタンを押してください。';
+const MSG_2_5_p_prefix = 'お電話番号は「';
+const MSG_2_5_p_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
+
+const MSG_2_5_p_1 = 'ピーという発信音の後に、お問い合わせ内容をお話しください。終了しましたら、「シャープ」を押してください。';
+const MSG_2_5_p_1_a = 'お問い合わせを承りました。内容を確認いたしまして、折り返しご連絡させていただきます。この度はお電話誠にありがとうございました。';
+const MSG_3_1 = 'WEBで予約購入されましたチケットの予約日時の変更に関しましては、特に事前の手続きは不要です。ご来場当日、カムイルミナの入場窓口までお越しいただきました上、その旨スタッフにお伝えください。\nこの度はお電話誠にありがとうございました。';
+const MSG_3_2 = 'WEBで予約購入されましたチケットのキャンセルにつきましては、基本承っておりません。天候などの理由にて、カムイルミナの開催が中止になった場合につきましては、後日チケットのキャンセルとご返金のご連絡をメールにてさせていただきます。\nこの度はお電話誠にありがとうございました。';
 const MSG_NO_TONE = 'ご入力が確認できません。ダイヤル回線ご利用の方は、プッシュトーンへの切替えをお願いいたします。';
 const MSG_BAD_DIGIT = 'ご入力番号が確認できませんでした。音声ガイダンスに従って、番号を正しく入力してください。';
 const MSG_BAD_PHONE = '電話番号を正しく入力してください。';
@@ -89,7 +90,7 @@ app.post('/welcome', (req, res) => {
     response.gather({
         action: '/section_1',
         method: 'POST',
-        finishOnKey: '*',
+        numDigits: 1,
         input: 'dtmf',
         timeout: 3600
     }).say({
@@ -112,28 +113,20 @@ app.post('/section_1', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
-
-    if (digit == '1') {
-        response.gather({
-            action: '/section_2',
-            method: 'POST',
-            finishOnKey: '*',            
-            input: 'dtmf',
-            timeout: 3600      
-        }).say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_1);
-        response.say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_NO_TONE);
-    } else {
-        response.say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_BAD_DIGIT);
-    }
+    response.gather({
+        action: '/section_2',
+        method: 'POST',
+        numDigits: 1,            
+        input: 'dtmf',
+        timeout: 3600      
+    }).say({
+        voice: 'alice',
+        language: 'ja-JP'
+    }, MSG_1);
+    response.say({
+        voice: 'alice',
+        language: 'ja-JP'
+    }, MSG_NO_TONE);
     console.log(response.toString()); // for debug
     res.header('Content-Type', 'text/xml');
     res.send(response.toString());
@@ -156,7 +149,7 @@ app.post('/section_2', (req, res) => {
         response.gather({
             action: '/section_2_2',
             method: 'POST',
-            finishOnKey: '*',            
+            numDigits: 1,            
             input: 'dtmf',
             timeout: 3600
         }).say({
@@ -168,18 +161,42 @@ app.post('/section_2', (req, res) => {
             voice: 'alice',
             language: 'ja-JP'
         }, MSG_NO_TONE);
-    // 2-3.その他のお問い合わせ
+    // 2-3.購入したチケットの再発行
     } else if (digit == '3') {
         response.gather({
             action: '/section_2_3',
             method: 'POST',
-            finishOnKey: '*',            
+            finishOnKey: '#',            
+            timeout: 3600,
+            input: 'dtmf'
+        }).say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_2_3
+        );
+        response.say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_NO_TONE);
+    // 2-4.購入したチケットの領収書
+    } else if (digit == '4') {
+        response.say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_2_4 
+        );        
+    // 2-5.その他のお問い合わせ
+    } else if (digit == '5') {
+        response.gather({
+            action: '/section_2_5',
+            method: 'POST',
+            finishOnKey: '#',            
             input: 'dtmf',
             timeout: 3600          
         }).say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_2_3
+        }, MSG_2_5
         );
         response.say({
             voice: 'alice',
@@ -200,45 +217,20 @@ app.post('/section_2_2', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
-    
-    // 3-1.購入したチケットの再発行
+
     if (digit == '1') {
-        response.gather({
-            action: '/section_3_1',
-            method: 'POST',
-            finishOnKey: '*',            
-            timeout: 3600,
-            input: 'dtmf'
-        }).say({
+        response.say({
             voice: 'alice',
             language: 'ja-JP'
         }, MSG_3_1
         );
-        response.say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_NO_TONE);        
-    // 3-2.購入したチケットの日時変更
+    // 3-3.購入したチケットのキャンセル
     } else if (digit == '2') {
         response.say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_3_2
+        }, MSG_3_2 
         );
-    // 3-3.購入したチケットのキャンセル
-    } else if (digit == '3') {
-        response.say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_3_3 
-        );
-    // 3-4.購入したチケットの領収書
-    } else if (digit == '4') {
-        response.say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_3_4 
-    );
     } else {
         response.say({
             voice: 'alice',
@@ -250,7 +242,7 @@ app.post('/section_2_2', (req, res) => {
     res.send(response.toString());
 });
 
-app.post('/section_3_1', (req, res) => {
+app.post('/section_2_3', (req, res) => {
     let phoneNumber = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
@@ -270,15 +262,15 @@ app.post('/section_3_1', (req, res) => {
         //     connection.end();
         // }); 
         response.gather({
-            action: '/section_3_1_1',
+            action: '/section_2_3_p',
             method: 'POST',
-            finishOnKey: '*',            
+            numDigits: 1,         
             timeout: 3600,
             input: 'dtmf'
         }).say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_3_1_1_prefix + phoneNumber + MSG_3_1_1_suffix
+        }, MSG_2_3_p_prefix + phoneNumber + MSG_2_3_p_suffix
         );
         response.say({
             voice: 'alice',
@@ -295,7 +287,7 @@ app.post('/section_3_1', (req, res) => {
     res.send(response.toString());
 });
 
-app.post('/section_3_1_1', (req, res) => {
+app.post('/section_2_3_p', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
@@ -304,7 +296,7 @@ app.post('/section_3_1_1', (req, res) => {
         response.say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_3_1_2
+        }, MSG_2_3_p_1
         );
     // 再度ご入力される場合
     } else if (digit == '2') {
@@ -322,12 +314,16 @@ app.post('/section_3_1_1', (req, res) => {
         //     connection.end();
         // });
         response.gather({
-            action: '/section_3_1',
+            action: '/section_2_3',
             method: 'POST',
-            finishOnKey: '*',            
-            input: 'dtmf',
-            timeout: 3600           
-        });
+            finishOnKey: '#',            
+            timeout: 3600,
+            input: 'dtmf'
+        }).say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_2_3
+        );
         response.say({
             voice: 'alice',
             language: 'ja-JP'
@@ -343,7 +339,7 @@ app.post('/section_3_1_1', (req, res) => {
     res.send(response.toString());
 });
 
-app.post('/section_2_3', (req, res) => {
+app.post('/section_2_5', (req, res) => {
     let phoneNumber = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
@@ -364,15 +360,15 @@ app.post('/section_2_3', (req, res) => {
         //     connection.end();
         // });                
         response.gather({
-            action: '/section_2_3_1',
+            action: '/section_2_5_p',
             method: 'POST',
-            finishOnKey: '*',
+            numDigits: 1,
             timeout: 3600,
             input: 'dtmf'
         }).say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_2_3_1_prefix + phoneNumber + MSG_2_3_1_suffix
+        }, MSG_2_5_p_prefix + phoneNumber + MSG_2_5_p_suffix
         );
         response.say({
             voice: 'alice',
@@ -389,14 +385,14 @@ app.post('/section_2_3', (req, res) => {
     res.send(response.toString());
 });
 
-app.post('/section_2_3_1', (req, res) => {
+app.post('/section_2_5_p', (req, res) => {
     let digit = req.body.Digits;
     // Generate a TwiML response
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
         response.gather({
-            action: '/section_2_3_1_1',
+            action: '/section_2_5_p_1',
             input: 'dtmf speech',
             method: 'POST',
             finishOnKey: '*',            
@@ -404,7 +400,7 @@ app.post('/section_2_3_1', (req, res) => {
         }).say({
             voice: 'alice',
             language: 'ja-JP'
-        }, MSG_2_3_2
+        }, MSG_2_5_p_1
         );
         response.say({
             voice: 'alice',
@@ -427,12 +423,16 @@ app.post('/section_2_3_1', (req, res) => {
         //     connection.end();
         // });   
         response.gather({
-            action: '/section_2_3',
+            action: '/section_2_5',
             method: 'POST',
-            finishOnKey: '*',            
+            numDigits: 1,            
             input: 'dtmf',
             timeout: 3600
-        });
+        }).say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_2_5
+        );
         response.say({
             voice: 'alice',
             language: 'ja-JP'
@@ -449,7 +449,7 @@ app.post('/section_2_3_1', (req, res) => {
 });
 
 
-app.post('/section_2_3_1_1', (req, res) => {
+app.post('/section_2_5_p_1', (req, res) => {
     let speechResult = req.body.SpeechResult;
     let confidence = req.body.Confidence;
     
@@ -458,7 +458,7 @@ app.post('/section_2_3_1_1', (req, res) => {
     response.say({
         voice: 'alice',
         language: 'ja-JP'
-    }, MSG_2_3_3
+    }, MSG_2_5_p_1_a
     );
     // 音声データを保存する
     console.log(response.toString());
