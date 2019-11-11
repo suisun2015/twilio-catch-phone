@@ -50,11 +50,11 @@ app.use(function(req, res, next){
 /**
  * Message Constants
  */
-const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線の確認を確認いたしますので、*を押してください。';
+const MSG_WELCOME = 'お電話ありがとうございます。こちらは、カムイルミナお問い合わせ窓口です。音声ガイダンスに従って、番号を入力してください。はじめに、ご利用の電話回線を確認いたしますので、*を押してください。';
 const MSG_STOP_SERVICE = `本日のカムイルミナは、悪天候のため中止とさせていただいております。本日のチケットをご予約いただいておりますお客様に着きましては、近日中にキャンセルの上ご返金のご連絡を、ご購入時のメールアドレスにお送りさせていただきます。\nこの度はお電話誠にありがとうございました。`;
 const MSG_1 = '本日の営業のお問い合わせにつきましては「１」を、ご購入されたチケットの日時変更・キャンセルに関しましては「２」を、購入したチケットの再発行に関しましては「３」を、購入したチケットの領収書につきましては「４」を、その他のお問い合わせに関しましては「５」を押してください。';
 const MSG_2_1 = '本日のカムイルミナの営業時間は17時から21時半までとなっております。ご予約いただきましたお客様に着きましては、ご予約時間の15分前には入場口へお越しくださいますよう、お願いいたします。\nこの度はお電話誠にありがとうございました。';
-const MSG_2_2 = 'ご購入されたチケットの日時変更をご希望の方は「１」を、ご購入されたチケットのキャンセルをご希望の方は「２」を押してください。。';
+const MSG_2_2 = 'ご購入されたチケットの日時変更をご希望の方は「１」を、ご購入されたチケットのキャンセルをご希望の方は「２」を押してください。';
 const MSG_2_3 = 'WEBでご購入されましたチケットに関しましては、ショートメッセージ送信による再発行が可能です。ご購入時に登録されたお電話番号をご入力の上、最後に「シャープ」ボタンを押してください。なお、ご購入時と異なるお電話番号を入力されても、再発行はできませんので予めご了承ください。';
 const MSG_2_3_p_prefix = 'お電話番号は「';
 const MSG_2_3_p_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
@@ -63,7 +63,6 @@ const MSG_2_4 = 'WEBで予約購入されましたチケットの領収書をご
 const MSG_2_5 = 'その他のお問い合わせにつきましては、こちらから折り返しお電話にてご連絡させていただきます。折り返しご連絡可能なお電話番号をご入力の上、最後に「シャープ」ボタンを押してください。';
 const MSG_2_5_p_prefix = 'お電話番号は「';
 const MSG_2_5_p_suffix = '」ですね。よろしければ「１」を、再度ご入力される場合は「２」を押してください。';
-
 const MSG_2_5_p_1 = 'ピーという発信音の後に、お問い合わせ内容をお話しください。終了しましたら、「シャープ」を押してください。';
 const MSG_2_5_p_1_a = 'お問い合わせを承りました。内容を確認いたしまして、折り返しご連絡させていただきます。この度はお電話誠にありがとうございました。';
 const MSG_3_1 = 'WEBで予約購入されましたチケットの予約日時の変更に関しましては、特に事前の手続きは不要です。ご来場当日、カムイルミナの入場窓口までお越しいただきました上、その旨スタッフにお伝えください。\nこの度はお電話誠にありがとうございました。';
@@ -391,17 +390,20 @@ app.post('/section_2_5_p', (req, res) => {
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
-        response.gather({
+        var gather = response.gather({
             action: '/section_2_5_p_1',
             input: 'dtmf speech',
             method: 'POST',
-            finishOnKey: '*',            
+            finishOnKey: '#',            
             timeout: 3600
-        }).say({
+        });
+        gather.say({
             voice: 'alice',
             language: 'ja-JP'
         }, MSG_2_5_p_1
         );
+        // gather.play({loop:1},'/beep.mp3');
+
         response.say({
             voice: 'alice',
             language: 'ja-JP'
@@ -425,7 +427,7 @@ app.post('/section_2_5_p', (req, res) => {
         response.gather({
             action: '/section_2_5',
             method: 'POST',
-            numDigits: 1,            
+            finishOnKey: '#',            
             input: 'dtmf',
             timeout: 3600
         }).say({
@@ -448,18 +450,19 @@ app.post('/section_2_5_p', (req, res) => {
     res.send(response.toString());
 });
 
-
 app.post('/section_2_5_p_1', (req, res) => {
     let speechResult = req.body.SpeechResult;
     let confidence = req.body.Confidence;
     
     // Generate a TwiML response
     let response = new VoiceResponse();
+
     response.say({
         voice: 'alice',
         language: 'ja-JP'
     }, MSG_2_5_p_1_a
     );
+
     // 音声データを保存する
     console.log(response.toString());
     res.header('Content-Type', 'text/xml');
