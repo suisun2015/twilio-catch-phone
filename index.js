@@ -407,7 +407,7 @@ app.post('/section_2_5_p', (req, res) => {
             language: 'ja-JP'
         }, MSG_2_5_p_1
         );
-        // gather.play({loop:1},'/beep.mp3');
+        gather.play({loop:1},'/beep.mp3');
 
         response.say({
             voice: 'alice',
