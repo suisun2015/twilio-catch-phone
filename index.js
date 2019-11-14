@@ -393,22 +393,17 @@ app.post('/section_2_5_p', (req, res) => {
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
-        var gather = response.gather({
+        response.record({
             action: '/section_2_5_p_1',
-            input: 'dtmf speech',
             method: 'POST',
-            language: 'ja-JP',
+            playBeep: true,
             finishOnKey: '#',
-            speechTimeout: 3600,           
-            timeout: 3600
-        });
-        gather.say({
+            timeout: 10
+        }).say({
             voice: 'alice',
             language: 'ja-JP'
         }, MSG_2_5_p_1
         );
-        gather.play({loop:1},'/beep.mp3');
-
         response.say({
             voice: 'alice',
             language: 'ja-JP'
@@ -456,12 +451,16 @@ app.post('/section_2_5_p', (req, res) => {
 });
 
 app.post('/section_2_5_p_1', (req, res) => {
-    let speechResult = req.body.SpeechResult;
-    let confidence = req.body.Confidence;
-    
+
+    let recordingURL = req.body.RecordingURL;
+    let recordingDuration = req.body.RecordingDuration;
+    let digits = req.body.Digits;
+
     // Generate a TwiML response
     let response = new VoiceResponse();
-
+    
+    // save recording url and attributes
+    
     response.say({
         voice: 'alice',
         language: 'ja-JP'
