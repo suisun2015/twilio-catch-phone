@@ -3,28 +3,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
-const mysql = require('mysql');
+var pool = require('./database');
 const app = express();
-
+const dotenv = require('dotenv');
 
 /**
- * Database Connection
- * 
+ * .env file config
  */
-var option = {
-    host: process.env.NODE_ENV ==='production' ? 'dev-aca.cu72a2lknk9v.ap-northeast-1.rds.amazonaws.com':'localhost',
-    user: 'root',
-    password: process.env.NODE_ENV ==='production' ? 'ehmOTI,L8R.':'ahfmqslek',
-    database: 'twilio_contacts'
-};
-console.log(option);
+dotenv.config();
 
 /**
  * Run server to listen on port 3000.
  */
-var port = process.env.NODE_ENV ==='production' ? 80 : 3000;
-const server = app.listen(port, () => {
-    console.log('listening on *:' +port);
+const server = app.listen(process.env.PORT, () => {
+    console.log('listening on *:' +process.env.PORT);
 });
 
 app.use(bodyParser.urlencoded({
@@ -41,7 +33,6 @@ app.use(function(req, res, next){
         created_at: new Date(),
         updated_at: new Date(),
         phone: '',
-        voice_path: ''
     };
     console.log(newContact);
     next();
@@ -248,18 +239,14 @@ app.post('/section_2_3', (req, res) => {
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
         console.log(newContact);
-        // connection.connect(function(err) {
-        //     if (err)
-        //         console.log('database connect failed' +  err);
-        //     else 
-        //         connection.query("INSERT INTO contacts set ?", newContact, function (err, result) {
-        //             if(err) 
-        //                 console.log("error: ", err);
-        //             else
-        //                 console.log('Inserted new record into contacts')
-        //         });
-        //     connection.end();
-        // }); 
+
+        pool.query("INSERT INTO contacts set ?", newContact, function (err, result) {
+            if(err) 
+                console.log("error: ", err);
+            else
+                console.log('Inserted new record into contacts:'+result);
+        });
+
         var slowPlay =  phoneNumber.split('').join(', ');
 
         response.gather({
@@ -302,18 +289,13 @@ app.post('/section_2_3_p', (req, res) => {
     // 再度ご入力される場合
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        // connection.connect(function(err) {
-        //     if (err)
-        //         console.log('database connect failed'+err);
-        //     else 
-        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
-        //             if(err) 
-        //                 console.log("error: ", err);
-        //             else
-        //                 console.log('Deleted record, CallSid: '+req.body.CallSid);
-        //         });
-        //     connection.end();
-        // });
+        pool.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
+            if(err) 
+                console.log("error: ", err);
+            else
+            console.log('Deleted record, CallSid: '+req.body.CallSid);
+        });
+
         response.gather({
             action: '/section_2_3',
             method: 'POST',
@@ -348,18 +330,12 @@ app.post('/section_2_5', (req, res) => {
     if (phoneNumber) {
         // 電話番号をデータベースに保存する
         console.log(newContact);
-        // connection.connect(function(err) {
-        //     if (err)
-        //         console.log('database connect failed'+err);
-        //     else 
-        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
-        //             if(err) 
-        //                 console.log("error: ", err);
-        //             else
-        //                 console.log('Inserted new record into contacts: '+req.body.CallSid);
-        //         });
-        //     connection.end();
-        // });
+        pool.query("INSERT INTO contacts set ?", newContact, function (err, result) {
+            if(err) 
+                console.log("error: ", err);
+            else
+                console.log('Inserted new record into contacts:'+result);
+        });
         var slowPlay =  phoneNumber.split('').join(', ');
         response.gather({
             action: '/section_2_5_p',
@@ -411,19 +387,12 @@ app.post('/section_2_5_p', (req, res) => {
     // 再度ご入力される場合 
     } else if (digit == '2') {
         // 保存した電話番号を捨てる
-        // connection.connect(function(err) {
-        //     if (err)
-        //         console.log('database connect failed'+err);
-        //     else 
-        //         connection.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
-        //             if(err) 
-        //                 console.log("error: ", err);
-        //             else
-        //                 console.log('Deleted record, CallSid: '+req.body.CallSid);
-        //                 connection.end();
-        //         });
-        //     connection.end();
-        // });   
+        pool.query("DELETE FROM contacts WHERE call_sid = ?", [req.body.CallSid], function (err, result) {
+            if(err) 
+                console.log("error: ", err);
+            else
+            console.log('Deleted record, CallSid: '+req.body.CallSid);
+        });
         response.gather({
             action: '/section_2_5',
             method: 'POST',
@@ -460,7 +429,16 @@ app.post('/section_2_5_p_1', (req, res) => {
     let response = new VoiceResponse();
     
     // save recording url and attributes
-    
+    newContact.recording_url = req.body.RecordingURL;
+    newContact.recording_duration = req.body.RecordingDuration;
+
+    pool.query("INSERT INTO contacts set ?", newContact, function (err, result) {
+        if(err) 
+            console.log("error: ", err);
+        else
+            console.log('Inserted new record into contacts:'+result);
+    });
+
     response.say({
         voice: 'alice',
         language: 'ja-JP'

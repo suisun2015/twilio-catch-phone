@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `call_sid` varchar(200) NOT NULL,
   `from` varchar(200) NOT NULL,
   `to` varchar(200) NOT NULL,
-  `phone` varchar(200) NOT NULL,
-  `voice_path` varchar(256) NOT NULL,
+  `recording_url` varchar(200),
+  `recording_duration` varchar(200),
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
