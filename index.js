@@ -369,17 +369,18 @@ app.post('/section_2_5_p', (req, res) => {
     let response = new VoiceResponse();
     // お問い合わせ内容
     if (digit == '1') {
+        response.say({
+            voice: 'alice',
+            language: 'ja-JP'
+        }, MSG_2_5_p_1
+        );
         response.record({
             action: '/section_2_5_p_1',
             method: 'POST',
             playBeep: true,
             finishOnKey: '#',
             timeout: 10
-        }).say({
-            voice: 'alice',
-            language: 'ja-JP'
-        }, MSG_2_5_p_1
-        );
+        });
         response.say({
             voice: 'alice',
             language: 'ja-JP'
