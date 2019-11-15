@@ -13,6 +13,8 @@ var pool = mysql.createPool({
     database:  process.env.DB_DATABASE
 });
 
+console.log('MySQL Connection Pool created!');
+
 pool.getConnection((err, connection) => {
     if (err) {
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
